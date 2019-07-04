@@ -1,8 +1,11 @@
 package pl.wasko.movies_server.model;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
@@ -19,15 +22,20 @@ public class Movie {
     private Director director;
     @ManyToMany
     private Set<Genre> genres;
-    private String year;
+    @Min(1890)
+    @Max(2050)
+    private Integer year;
     private String description;
 
-    public Movie(String title, Director director, Set<Genre> genres, String year, String description) {
+    public Movie(String title, Director director, Set<Genre> genres, Integer year, String description) {
         this.title = title;
         this.director = director;
         this.genres = genres;
         this.year = year;
         this.description = description;
+    }
+
+    public Movie() {
     }
 
     public Long getId() {
@@ -62,11 +70,11 @@ public class Movie {
         this.genres = genres;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

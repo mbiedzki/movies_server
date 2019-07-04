@@ -9,5 +9,6 @@ import pl.wasko.movies_server.model.Movie;
 public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
     // This methods returns pageable result of db query
     //TODO create query to search by director and genre
-    Page<Movie> findByTitleContainingIgnoreCaseAndDirectorContainingIgnoreCase(String title, Director director, Pageable pageable);
+    Page<Movie> findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContaining(
+            String title, String director_lastName, Integer year, Pageable pageable);
 }
