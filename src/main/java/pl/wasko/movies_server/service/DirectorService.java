@@ -14,13 +14,22 @@ public class DirectorService {
     @Autowired
     private DirectorRepository directorRepository;
 
-    public List<Director> findAll(PageRequest pageRequest) {
+    public List<Director> findAllPageable(PageRequest pageRequest) {
         Page<Director> directorsPage = directorRepository.findAll(pageRequest);
         return directorsPage.getContent();
     }
-
     public List<Director> findByLastName(String lastName, PageRequest pageRequest) {
         Page<Director> directorsPage = directorRepository.findByLastNameContainingIgnoreCase(lastName, pageRequest);
         return directorsPage.getContent();
+    }
+    public List<Director> findByFirstName(String firstName, PageRequest pageRequest) {
+        Page<Director> directorsPage = directorRepository.findByFirstNameContainingIgnoreCase(firstName, pageRequest);
+        return directorsPage.getContent();
+    }
+    public Director findOneById(Long id) {
+        return directorRepository.findById(id).get();
+    }
+    public Director save(Director director) {
+        return directorRepository.save(director);
     }
 }
