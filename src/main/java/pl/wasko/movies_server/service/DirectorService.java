@@ -14,16 +14,9 @@ public class DirectorService {
     @Autowired
     private DirectorRepository directorRepository;
 
-    public List<Director> findAllPageable(PageRequest pageRequest) {
-        Page<Director> directorsPage = directorRepository.findAll(pageRequest);
-        return directorsPage.getContent();
-    }
-    public List<Director> findByLastName(String lastName, PageRequest pageRequest) {
-        Page<Director> directorsPage = directorRepository.findByLastNameContainingIgnoreCase(lastName, pageRequest);
-        return directorsPage.getContent();
-    }
-    public List<Director> findByFirstName(String firstName, PageRequest pageRequest) {
-        Page<Director> directorsPage = directorRepository.findByFirstNameContainingIgnoreCase(firstName, pageRequest);
+    public List<Director> findByLastAndFirstName(String lastName, String firstName, PageRequest pageRequest) {
+        Page<Director> directorsPage = directorRepository.findByLastNameContainingIgnoreCaseAndFirstNameContainingIgnoreCase(
+                lastName, firstName, pageRequest);
         return directorsPage.getContent();
     }
     public Director findOneById(Long id) {
@@ -31,5 +24,8 @@ public class DirectorService {
     }
     public Director save(Director director) {
         return directorRepository.save(director);
+    }
+    public void delete(Long id) {
+        directorRepository.deleteById(id);
     }
 }

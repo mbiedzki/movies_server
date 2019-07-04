@@ -18,28 +18,16 @@ public class DirectorController {
     @Autowired
     private DirectorService directorService;
 
-    //find all with paging
+    //find all by last and first name with paging
     @GetMapping("")
-    public List<Director> getDirectorsPageable(@RequestParam Integer page,
-                                               @RequestParam Integer size, HttpServletResponse response) {
+    public List<Director> findDirectorsByLastAndFirstNamePageable(
+            @RequestParam(defaultValue = "") String lastName,
+            @RequestParam(defaultValue = "") String firstName,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            HttpServletResponse response) {
         response.setContentType("application/json");
-        return directorService.findAllPageable(of(page, size));
-    }
-
-    //find all by last name with paging
-    @GetMapping("/findbylastname")
-    public List<Director> findDirectorsByLastNamePageable(@RequestParam String lastName, @RequestParam Integer page,
-                                               @RequestParam Integer size, HttpServletResponse response) {
-        response.setContentType("application/json");
-        return directorService.findByLastName(lastName, of(page, size));
-    }
-
-    //find all by first name with paging
-    @GetMapping("/findbyfirstname")
-    public List<Director> findDirectorsByFirstNamePageable(@RequestParam String firstName, @RequestParam Integer page,
-                                                          @RequestParam Integer size, HttpServletResponse response) {
-        response.setContentType("application/json");
-        return directorService.findByFirstName(firstName, of(page, size));
+        return directorService.findByLastAndFirstName(lastName, firstName, of(page, size));
     }
 
     //find one by id
@@ -61,12 +49,19 @@ public class DirectorController {
     }
 
     //add one by id
-    @PostMapping("/")
+    @PostMapping("")
     public Director addDirector(@RequestBody Director director) {
         Director directorToBeAdded = new Director();
         //set filed values with received ones
         directorToBeAdded.setFirstName(director.getFirstName());
         directorToBeAdded.setLastName(director.getLastName());
         return directorService.save(directorToBeAdded);
+    }
+
+    //find one by id
+    @DeleteMapping("/{id}")
+    public void deleteDirectorById(@PathVariable Long id, HttpServletResponse response) {
+        response.setContentType("application/json");
+        directorService.delete(id);
     }
 }
