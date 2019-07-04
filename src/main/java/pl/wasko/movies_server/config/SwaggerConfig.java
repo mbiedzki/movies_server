@@ -23,7 +23,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("pl.wasko.movies_server.REST"))
-                .paths(regex("/directors.*"))
+                .paths(PathSelectors.ant("/**"))
                 .build()
                 .apiInfo(metaData());
     }

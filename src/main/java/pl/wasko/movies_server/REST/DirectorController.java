@@ -1,6 +1,7 @@
 package pl.wasko.movies_server.REST;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import pl.wasko.movies_server.model.Director;
 import pl.wasko.movies_server.service.DirectorService;
@@ -25,9 +26,10 @@ public class DirectorController {
             @RequestParam(defaultValue = "") String firstName,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "lastName") String sortBy,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        return directorService.findByLastAndFirstName(lastName, firstName, of(page, size));
+        return directorService.findByLastAndFirstName(lastName, firstName, of(page, size, Sort.by(sortBy)));
     }
 
     //find one by id
@@ -63,5 +65,6 @@ public class DirectorController {
     public void deleteDirectorById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         directorService.delete(id);
+        response.setStatus(204);
     }
 }
