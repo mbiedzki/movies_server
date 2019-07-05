@@ -22,12 +22,11 @@ public class Movie {
     private Director director;
     @ManyToMany
     private Set<Genre> genres;
-    @Min(1890)
-    @Max(2050)
-    private Integer year;
+    @NotBlank
+    private String year;
     private String description;
 
-    public Movie(String title, Director director, Set<Genre> genres, Integer year, String description) {
+    public Movie(String title, Director director, Set<Genre> genres, String year, String description) {
         this.title = title;
         this.director = director;
         this.genres = genres;
@@ -70,11 +69,11 @@ public class Movie {
         this.genres = genres;
     }
 
-    public Integer getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(String year) {
         this.year = year;
     }
 

@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import pl.wasko.movies_server.model.Director;
+import pl.wasko.movies_server.model.Genre;
 import pl.wasko.movies_server.model.Movie;
 import pl.wasko.movies_server.service.DirectorService;
 import pl.wasko.movies_server.service.MovieService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -26,13 +30,13 @@ public class MovieController {
     public List<Movie> findMovieByParamsPageable(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "") String directorLastName,
-            @RequestParam(required = false) Integer year,
+            @RequestParam(defaultValue = "") String year,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "title") String sortBy,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        return movieService.findByParams(title, directorLastName, year,  of(page, size, Sort.by(sortBy)));
+        return movieService.findByParams(title, directorLastName, year, of(page, size, Sort.by(sortBy)));
     }
 
     //find one by id
@@ -47,11 +51,14 @@ public class MovieController {
     public Movie updateMovieById(@RequestBody Movie movie, @PathVariable Long id) {
         //find movie in db movie movieToBeUpdated = movieService.findOneById(id);
         Movie movieToBeUpdated = movieService.findOneById(id);
-        Director directorToBeAddedInMovie = directorService.findOneById(movie.getDirector().getId());
-        //set filed values with received ones
+
+        //set new movie values with received ones
         movieToBeUpdated.setTitle(movie.getTitle());
-        movieToBeUpdated.setDirector(directorToBeAddedInMovie);
-        //TODO set genres
+        movieToBeUpdated.setDirector(movie.getDirector());
+        movieToBeUpdated.setGenres(movie.getGenres());
+        movieToBeUpdated.setYear(movie.getYear());
+        movieToBeUpdated.setDescription(movie.getDescription());
+
         return movieService.save(movieToBeUpdated);
     }
 
@@ -59,9 +66,14 @@ public class MovieController {
     @PostMapping("")
     public Movie addMovie(@RequestBody Movie movie) {
         Movie movieToBeAdded = new Movie();
-        //set filed values with received ones
+
+        //set new movie values with received ones
         movieToBeAdded.setTitle(movie.getTitle());
-        //TODO set director and genres
+        movieToBeAdded.setDirector(movie.getDirector());
+        movieToBeAdded.setGenres(movie.getGenres());
+        movieToBeAdded.setYear(movie.getYear());
+        movieToBeAdded.setDescription(movie.getDescription());
+
         return movieService.save(movieToBeAdded);
     }
 

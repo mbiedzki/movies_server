@@ -4,18 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import pl.wasko.movies_server.model.Genre;
 import pl.wasko.movies_server.model.Movie;
+import pl.wasko.movies_server.repository.GenreRepository;
 import pl.wasko.movies_server.repository.MovieRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public List<Movie> findByParams(String title, String directorLastName, Integer year, PageRequest pageRequest) {
-        Page<Movie> moviesPage = movieRepository.findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContaining(
+    public List<Movie> findByParams(String title, String directorLastName, String year, PageRequest pageRequest) {
+
+        Page<Movie> moviesPage = movieRepository.findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContainingIgnoreCase(
                 title, directorLastName, year, pageRequest);
         return moviesPage.getContent();
     }
