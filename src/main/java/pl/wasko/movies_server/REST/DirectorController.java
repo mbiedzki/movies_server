@@ -60,7 +60,7 @@ public class DirectorController {
         return directorService.save(directorToBeAdded);
     }
 
-    //find one by id
+    //delete one by id
     @DeleteMapping("/{id}")
     public void deleteDirectorById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");

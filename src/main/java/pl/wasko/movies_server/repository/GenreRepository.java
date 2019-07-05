@@ -10,5 +10,4 @@ import java.util.Set;
 public interface GenreRepository extends PagingAndSortingRepository<Genre, Long> {
     // This methods returns pageable result of db query
     Page<Genre> findByGenreNameContainingIgnoreCase(String genreName, Pageable pageable);
-    Set<Genre> findByGenreNameContainingIgnoreCase(String genreName);
 }
