@@ -3,7 +3,6 @@ package pl.wasko.movies_server.REST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import pl.wasko.movies_server.model.Role;
 import pl.wasko.movies_server.model.User;
 import pl.wasko.movies_server.service.UserService;
 
@@ -29,30 +28,58 @@ public class UserController {
             @RequestParam(defaultValue = "10") Integer size,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        return userService.findUsersByParams(name, of(page, size, Sort.by("name")));
+        List<User> listToBeReturned = userService.findUsersByParams(name, of(page, size, Sort.by("name")));
+        for (User user : listToBeReturned) {
+            user.setPassword("XXXXX");
+        }
+        return listToBeReturned;
     }
-
-    @PostMapping("")
-    public User addUser(@RequestBody User user) {
-        return userService.saveWithPassEncoding(user);
-    }
-
     //find one by id
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
-        return userService.findOneById(id);
+        User userToBeReturned = userService.findOneById(id);
+        userToBeReturned.setPassword("XXXXX");
+        return userToBeReturned;
     }
+    @PostMapping("")
+    public User addUser(@RequestBody User user, HttpServletResponse response) {
+        User userToBeAdded = new User();
+        if (user.getPassword().isEmpty()) {
+            response.setStatus(400);
+            return user;
+        }
+        //set filed values with received ones
+        userToBeAdded.setName(user.getName());
+        userToBeAdded.setActive(user.isActive());
+        userToBeAdded.setRoles(user.getRoles());
+        userToBeAdded.setPassword(user.getPassword());
+        userService.saveWithPassEncoding(userToBeAdded);
+        userToBeAdded.setPassword("password encoded");
+        return userToBeAdded;
+    }
+
     //update one by id
     @PutMapping("/{id}")
     public User updateUserById(@RequestBody User user, @PathVariable Long id) {
-        //find director in db
+        //find user in db
         User userToBeUpdated = userService.findOneById(id);
         //set filed values with received ones
         userToBeUpdated.setName(user.getName());
         userToBeUpdated.setActive(user.isActive());
         userToBeUpdated.setRoles(user.getRoles());
-        return userService.saveWithoutPassChange(userToBeUpdated);
+        //if client entered new password then save user with password encoded
+        //if password was not input (changed) then save user with current password without encoding
+        if(!user.getPassword().isEmpty()) {
+            userToBeUpdated.setPassword(user.getPassword());
+            userService.saveWithPassEncoding(userToBeUpdated);
+            user.setPassword("password encoded");
+            return user;
+        } else {
+            userService.saveWithoutPassEncoding(userToBeUpdated);
+            user.setPassword("password saved without encoding");
+            return user;
+        }
     }
     //delete one by id
     @DeleteMapping("/{id}")

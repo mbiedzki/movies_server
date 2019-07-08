@@ -2,13 +2,15 @@ package pl.wasko.movies_server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-
+@Transactional
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +22,6 @@ public class User {
     @Column(name = "password")
     @Length(min = 4)
     @NotEmpty()
-    @JsonIgnore
     private String password;
     @Column(name = "active")
     private boolean active;

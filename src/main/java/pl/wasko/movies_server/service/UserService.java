@@ -31,13 +31,16 @@ public class UserService {
     }
     public User saveWithPassEncoding(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        return user;
     }
-    public User saveWithoutPassChange(User user) {
-        return userRepository.save(user);
+    public User saveWithoutPassEncoding(User user) {
+        userRepository.save(user);
+        return user;
     }
     public User findOneById(Long id) {
-        return userRepository.findById(id).get();
+        User userToBeSend = userRepository.findById(id).get();
+        return userToBeSend;
     }
     public void delete(Long id) {
         userRepository.deleteById(id);
