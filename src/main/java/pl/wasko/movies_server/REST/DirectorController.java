@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.wasko.movies_server.model.Director;
 import pl.wasko.movies_server.service.DirectorService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class DirectorController {
 
     //find all by last and first name with paging
     @GetMapping("")
-    public List<Director> findDirectorsByLastAndFirstNamePageable(
+    public List<Director> findByParamsPageable(
             @RequestParam(defaultValue = "") String lastName,
             @RequestParam(defaultValue = "") String firstName,
             @RequestParam(defaultValue = "0") Integer page,
@@ -34,14 +35,14 @@ public class DirectorController {
 
     //find one by id
     @GetMapping("/{id}")
-    public Director getDirectorById(@PathVariable Long id, HttpServletResponse response) {
+    public Director findById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         return directorService.findOneById(id);
     }
 
     //update one by id
     @PutMapping("/{id}")
-    public Director updateDirectorById(@RequestBody Director director, @PathVariable Long id) {
+    public Director update(@RequestBody Director director, @PathVariable Long id) {
         //find director in db
         Director directorToBeUpdated = directorService.findOneById(id);
         //set filed values with received ones
@@ -52,7 +53,7 @@ public class DirectorController {
 
     //add one by id
     @PostMapping("")
-    public Director addDirector(@RequestBody Director director) {
+    public Director add(@RequestBody Director director) {
         Director directorToBeAdded = new Director();
         //set filed values with received ones
         directorToBeAdded.setFirstName(director.getFirstName());
@@ -61,8 +62,9 @@ public class DirectorController {
     }
 
     //delete one by id
+    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping("/{id}")
-    public void deleteDirectorById(@PathVariable Long id, HttpServletResponse response) {
+    public void delete(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         directorService.delete(id);
         response.setStatus(204);

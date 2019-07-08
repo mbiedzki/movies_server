@@ -4,17 +4,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Transactional
-@Table(name="genres")
+@Table(name = "genres")
 public class Genre {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        @NotBlank
-        private String genreName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NotBlank
+    private String genreName;
 
     public Genre(String genreName) {
         this.genreName = genreName;
@@ -41,6 +40,9 @@ public class Genre {
 
     @Override
     public String toString() {
-        return genreName;
+        return "Genre{" +
+                "id=" + id +
+                ", genreName='" + genreName + '\'' +
+                '}';
     }
 }

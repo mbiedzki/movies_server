@@ -7,10 +7,7 @@ import pl.wasko.movies_server.model.User;
 import pl.wasko.movies_server.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -22,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("")
-    public List<User> findUsersByNamePageable(
+    public List<User> findByNamePageable(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
@@ -34,16 +31,18 @@ public class UserController {
         }
         return listToBeReturned;
     }
+
     //find one by id
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id, HttpServletResponse response) {
+    public User findByById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         User userToBeReturned = userService.findOneById(id);
         userToBeReturned.setPassword("XXXXX");
         return userToBeReturned;
     }
+
     @PostMapping("")
-    public User addUser(@RequestBody User user, HttpServletResponse response) {
+    public User add(@RequestBody User user, HttpServletResponse response) {
         User userToBeAdded = new User();
         if (user.getPassword().isEmpty()) {
             response.setStatus(400);
@@ -55,13 +54,13 @@ public class UserController {
         userToBeAdded.setRoles(user.getRoles());
         userToBeAdded.setPassword(user.getPassword());
         userService.saveWithPassEncoding(userToBeAdded);
-        userToBeAdded.setPassword("password encoded");
+        userToBeAdded.setPassword("hasło zostało zaszyfrowane");
         return userToBeAdded;
     }
 
     //update one by id
     @PutMapping("/{id}")
-    public User updateUserById(@RequestBody User user, @PathVariable Long id) {
+    public User update(@RequestBody User user, @PathVariable Long id) {
         //find user in db
         User userToBeUpdated = userService.findOneById(id);
         //set filed values with received ones
@@ -70,20 +69,21 @@ public class UserController {
         userToBeUpdated.setRoles(user.getRoles());
         //if client entered new password then save user with password encoded
         //if password was not input (changed) then save user with current password without encoding
-        if(!user.getPassword().isEmpty()) {
+        if (!user.getPassword().isEmpty()) {
             userToBeUpdated.setPassword(user.getPassword());
             userService.saveWithPassEncoding(userToBeUpdated);
-            user.setPassword("password encoded");
+            user.setPassword("hasło zostało zaszyfrowane");
             return user;
         } else {
             userService.saveWithoutPassEncoding(userToBeUpdated);
-            user.setPassword("password saved without encoding");
+            user.setPassword("hasło bez zmian");
             return user;
         }
     }
+
     //delete one by id
     @DeleteMapping("/{id}")
-    public void deleteDirectorById(@PathVariable Long id, HttpServletResponse response) {
+    public void delete(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         userService.delete(id);
         response.setStatus(204);

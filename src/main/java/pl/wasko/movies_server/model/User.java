@@ -1,6 +1,5 @@
 package pl.wasko.movies_server.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +36,7 @@ public class User {
         this.active = active;
         this.roles = roles;
     }
+
     public User() {
     }
 

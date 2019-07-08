@@ -5,8 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.wasko.movies_server.model.Genre;
 
-import java.util.Set;
-
 public interface GenreRepository extends PagingAndSortingRepository<Genre, Long> {
     // This methods returns pageable result of db query
     Page<Genre> findByGenreNameContainingIgnoreCase(String genreName, Pageable pageable);

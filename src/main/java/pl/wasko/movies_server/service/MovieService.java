@@ -4,13 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import pl.wasko.movies_server.model.Genre;
 import pl.wasko.movies_server.model.Movie;
-import pl.wasko.movies_server.repository.GenreRepository;
 import pl.wasko.movies_server.repository.MovieRepository;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MovieService {
@@ -23,12 +20,15 @@ public class MovieService {
                 title, directorLastName, year, pageRequest);
         return moviesPage.getContent();
     }
+
     public Movie findOneById(Long id) {
         return movieRepository.findById(id).get();
     }
+
     public Movie save(Movie movie) {
         return movieRepository.save(movie);
     }
+
     public void delete(Long id) {
         movieRepository.deleteById(id);
     }

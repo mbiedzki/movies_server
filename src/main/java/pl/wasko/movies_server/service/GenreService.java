@@ -19,13 +19,16 @@ public class GenreService {
                 genreName, pageRequest);
         return genresPage.getContent();
     }
+
     public Genre findOneById(Long id) {
         return genreRepository.findById(id).get();
     }
+
     public Genre save(Genre director) {
         return genreRepository.save(director);
     }
+
     public void delete(Long id) {
-       genreRepository.deleteById(id);
+        genreRepository.deleteById(id);
     }
 }

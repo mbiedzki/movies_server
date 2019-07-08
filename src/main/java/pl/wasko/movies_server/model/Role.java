@@ -2,7 +2,7 @@ package pl.wasko.movies_server.model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity()
 @Table(name = "roles")
 public class Role {
     @Id
@@ -15,6 +15,7 @@ public class Role {
     public Role(String role) {
         this.role = role;
     }
+
     public Role() {
     }
 

@@ -51,6 +51,10 @@ public class Director {
 
     @Override
     public String toString() {
-        return lastName + ' ' + firstName;
+        return "Director{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

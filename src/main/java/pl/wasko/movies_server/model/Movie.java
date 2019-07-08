@@ -1,17 +1,14 @@
 package pl.wasko.movies_server.model;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
 @Transactional
-@Table(name="movies")
+@Table(name = "movies")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +17,7 @@ public class Movie {
     private String title;
     @ManyToOne
     private Director director;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Genre> genres;
     @NotBlank
     private String year;

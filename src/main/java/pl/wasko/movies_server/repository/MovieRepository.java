@@ -11,7 +11,6 @@ import java.util.Set;
 
 public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
     // This methods returns pageable result of db query
-    //TODO create query to search by director and genre
     Page<Movie> findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContainingIgnoreCase(
             String title, String director_lastName, String year, Pageable pageable);
 }

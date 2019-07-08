@@ -3,17 +3,13 @@ package pl.wasko.movies_server.REST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import pl.wasko.movies_server.model.Director;
-import pl.wasko.movies_server.model.Genre;
 import pl.wasko.movies_server.model.Movie;
 import pl.wasko.movies_server.service.DirectorService;
 import pl.wasko.movies_server.service.MovieService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -23,11 +19,10 @@ import static org.springframework.data.domain.PageRequest.of;
 public class MovieController {
     @Autowired
     private MovieService movieService;
-    @Autowired
-    private DirectorService directorService;
+
     //find all by last and first name with paging
     @GetMapping("")
-    public List<Movie> findMovieByParamsPageable(
+    public List<Movie> findByParamsPageable(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "") String directorLastName,
             @RequestParam(defaultValue = "") String year,
@@ -41,14 +36,14 @@ public class MovieController {
 
     //find one by id
     @GetMapping("/{id}")
-    public Movie getmovieById(@PathVariable Long id, HttpServletResponse response) {
+    public Movie findById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         return movieService.findOneById(id);
     }
 
     //update one by id
     @PutMapping("/{id}")
-    public Movie updateMovieById(@RequestBody Movie movie, @PathVariable Long id) {
+    public Movie update(@RequestBody Movie movie, @PathVariable Long id) {
         //find movie in db movie movieToBeUpdated = movieService.findOneById(id);
         Movie movieToBeUpdated = movieService.findOneById(id);
 
@@ -64,7 +59,7 @@ public class MovieController {
 
     //add one by id
     @PostMapping("")
-    public Movie addMovie(@RequestBody Movie movie) {
+    public Movie add(@RequestBody Movie movie) {
         Movie movieToBeAdded = new Movie();
 
         //set new movie values with received ones
@@ -77,9 +72,10 @@ public class MovieController {
         return movieService.save(movieToBeAdded);
     }
 
-    //find one by id
+    //delete one by id
+    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping("/{id}")
-    public void deletemovieById(@PathVariable Long id, HttpServletResponse response) {
+    public void delete(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         movieService.delete(id);
         response.setStatus(204);

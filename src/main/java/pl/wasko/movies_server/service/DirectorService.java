@@ -19,12 +19,15 @@ public class DirectorService {
                 lastName, firstName, pageRequest);
         return directorsPage.getContent();
     }
+
     public Director findOneById(Long id) {
         return directorRepository.findById(id).get();
     }
+
     public Director save(Director director) {
         return directorRepository.save(director);
     }
+
     public void delete(Long id) {
         directorRepository.deleteById(id);
     }
