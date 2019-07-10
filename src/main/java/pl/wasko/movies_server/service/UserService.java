@@ -19,8 +19,8 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public List<User> findUsersByName(String name, PageRequest pageRequest) {
-        Page<User> directorsPage = userRepository.findUsersByName(
+    public List<User> findUsersByParams(String name, PageRequest pageRequest) {
+        Page<User> directorsPage = userRepository.findUsersByNameContainingIgnoreCase(
                 name, pageRequest);
         return directorsPage.getContent();
     }
@@ -36,6 +36,10 @@ public class UserService {
 
     public User findOneById(Long id) {
         return userRepository.findById(id).get();
+    }
+
+    public User findOneByName(String name) {
+        return userRepository.findOneByName(name);
     }
 
     public void delete(Long id) {

@@ -25,11 +25,19 @@ public class UserController {
             @RequestParam(defaultValue = "10") Integer size,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        List<User> listToBeReturned = userService.findUsersByName(name, of(page, size, Sort.by("name")));
+        List<User> listToBeReturned = userService.findUsersByParams(name, of(page, size, Sort.by("name")));
         for (User user : listToBeReturned) {
             user.setPassword("");
         }
         return listToBeReturned;
+    }
+
+    @GetMapping("/findOne")
+    public User findOneByName(@RequestParam String name, HttpServletResponse response){
+        response.setContentType("application/json");
+        User userToBeReturned = userService.findOneByName(name);
+        userToBeReturned.setPassword("");
+        return userToBeReturned;
     }
 
     //find one by id
