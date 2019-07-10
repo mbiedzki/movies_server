@@ -6,5 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.wasko.movies_server.model.User;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
-    Page<User> findUsersByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<User> findUsersByName(String name, Pageable pageable);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import static org.springframework.data.domain.PageRequest.of;
 
 @RestController
-@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
+@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
 @RequestMapping("/users")
 public class UserController {
     @Autowired
@@ -25,9 +25,9 @@ public class UserController {
             @RequestParam(defaultValue = "10") Integer size,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        List<User> listToBeReturned = userService.findUsersByParams(name, of(page, size, Sort.by("name")));
+        List<User> listToBeReturned = userService.findUsersByName(name, of(page, size, Sort.by("name")));
         for (User user : listToBeReturned) {
-            user.setPassword("XXXXX");
+            user.setPassword("");
         }
         return listToBeReturned;
     }
@@ -37,7 +37,7 @@ public class UserController {
     public User findByById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         User userToBeReturned = userService.findOneById(id);
-        userToBeReturned.setPassword("XXXXX");
+        userToBeReturned.setPassword("");
         return userToBeReturned;
     }
 

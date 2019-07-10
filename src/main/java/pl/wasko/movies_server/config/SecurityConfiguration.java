@@ -3,6 +3,7 @@ package pl.wasko.movies_server.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,11 +47,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/directors/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/genres/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/movies/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                .antMatchers("/users/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/directors/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/movies/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/genres/**").hasAnyRole("ADMIN", "USER")
                 .and().httpBasic()
                 .and().csrf().disable();
     }
