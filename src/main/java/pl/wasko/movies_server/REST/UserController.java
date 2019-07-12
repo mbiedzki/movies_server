@@ -8,6 +8,7 @@ import pl.wasko.movies_server.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -19,16 +20,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("")
-    public List<User> findByNamePageable(
+    public Map findByNamePageable(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        List<User> listToBeReturned = userService.findUsersByParams(name, of(page, size, Sort.by("name")));
-        for (User user : listToBeReturned) {
-            user.setPassword("");
-        }
+        Map listToBeReturned = userService.findUsersByParams(name, of(page, size, Sort.by("name")));
         return listToBeReturned;
     }
 

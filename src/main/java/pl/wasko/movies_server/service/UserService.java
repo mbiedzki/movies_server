@@ -10,7 +10,9 @@ import pl.wasko.movies_server.model.User;
 import pl.wasko.movies_server.repository.UserRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 @Service
 public class UserService {
@@ -19,10 +21,14 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public List<User> findUsersByParams(String name, PageRequest pageRequest) {
-        Page<User> directorsPage = userRepository.findUsersByNameContainingIgnoreCase(
+    public Map findUsersByParams(String name, PageRequest pageRequest) {
+        Page<User> usersPage = userRepository.findUsersByNameContainingIgnoreCase(
                 name, pageRequest);
-        return directorsPage.getContent();
+        Map result = new TreeMap();
+        result.put("content", usersPage.getContent());
+        result.put("totalElements", usersPage.getTotalElements());
+        result.put("totalPages", usersPage.getTotalPages());
+        return result;
     }
 
     public void saveWithPassEncoding(User user) {
