@@ -57,6 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/movies/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/genres/**").hasAnyRole("ADMIN", "USER")
                 .and().httpBasic()
+                .and().cors()
                 .and().csrf().disable();
     }
 

@@ -13,7 +13,6 @@ import java.util.Map;
 import static org.springframework.data.domain.PageRequest.of;
 
 @RestController
-@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
 @RequestMapping("/users")
 public class UserController {
     @Autowired
@@ -60,7 +59,7 @@ public class UserController {
         userToBeAdded.setRoles(user.getRoles());
         userToBeAdded.setPassword(user.getPassword());
         userService.saveWithPassEncoding(userToBeAdded);
-        userToBeAdded.setPassword("hasło zostało zaszyfrowane");
+        userToBeAdded.setPassword("");
         return userToBeAdded;
     }
 
@@ -78,11 +77,11 @@ public class UserController {
         if (!user.getPassword().isEmpty()) {
             userToBeUpdated.setPassword(user.getPassword());
             userService.saveWithPassEncoding(userToBeUpdated);
-            user.setPassword("hasło zostało zaszyfrowane");
+            user.setPassword("");
             return user;
         } else {
             userService.saveWithoutPassEncoding(userToBeUpdated);
-            user.setPassword("hasło bez zmian");
+            user.setPassword("");
             return user;
         }
     }
