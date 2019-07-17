@@ -14,11 +14,11 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public List<Movie> findByParams(String title, String directorLastName, String year, PageRequest pageRequest) {
+    public Page<Movie> findByParams(String title, String directorLastName, String year, PageRequest pageRequest) {
 
         Page<Movie> moviesPage = movieRepository.findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContainingIgnoreCase(
                 title, directorLastName, year, pageRequest);
-        return moviesPage.getContent();
+        return moviesPage;
     }
 
     public Movie findOneById(Long id) {

@@ -1,6 +1,7 @@
 package pl.wasko.movies_server.REST;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import pl.wasko.movies_server.model.Movie;
@@ -22,16 +23,21 @@ public class MovieController {
 
     //find all by last and first name with paging
     @GetMapping("")
-    public List<Movie> findByParamsPageable(
+    public Page<Movie> findByParamsPageable(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "") String directorLastName,
             @RequestParam(defaultValue = "") String year,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "title") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder,
             HttpServletResponse response) {
         response.setContentType("application/json");
-        return movieService.findByParams(title, directorLastName, year, of(page, size, Sort.by(sortBy)));
+        if (sortOrder.equals("asc")) {
+            return movieService.findByParams(title, directorLastName, year, of(page, size, Sort.by(sortBy).ascending()));
+        } else {
+            return movieService.findByParams(title, directorLastName, year, of(page, size, Sort.by(sortBy).descending()));
+        }
     }
 
     //find one by id
