@@ -11,6 +11,7 @@ import pl.wasko.movies_server.service.MovieService;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -23,7 +24,7 @@ public class MovieController {
 
     //find all by last and first name with paging
     @GetMapping("")
-    public Page<Movie> findByParamsPageable(
+    public Map findByParamsPageable(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "") String directorLastName,
             @RequestParam(defaultValue = "") String year,

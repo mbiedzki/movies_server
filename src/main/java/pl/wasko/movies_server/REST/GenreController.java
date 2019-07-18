@@ -9,6 +9,7 @@ import pl.wasko.movies_server.service.GenreService;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -21,7 +22,7 @@ public class GenreController {
 
     //find all by last and first name with paging
     @GetMapping("")
-    public List<Genre> findByParamsPageable(
+    public Map findByParamsPageable(
             @RequestParam(defaultValue = "") String genreName,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,

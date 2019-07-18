@@ -8,17 +8,23 @@ import pl.wasko.movies_server.model.Movie;
 import pl.wasko.movies_server.repository.MovieRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public Page<Movie> findByParams(String title, String directorLastName, String year, PageRequest pageRequest) {
+    public Map findByParams(String title, String directorLastName, String year, PageRequest pageRequest) {
 
-        Page<Movie> moviesPage = movieRepository.findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContainingIgnoreCase(
+        Page<Movie> page = movieRepository.findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContainingIgnoreCase(
                 title, directorLastName, year, pageRequest);
-        return moviesPage;
+        Map result = new TreeMap();
+        result.put("content", page.getContent());
+        result.put("totalElements", page.getTotalElements());
+        result.put("totalPages", page.getTotalPages());
+        return result;
     }
 
     public Movie findOneById(Long id) {

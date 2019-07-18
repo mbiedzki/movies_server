@@ -8,16 +8,22 @@ import pl.wasko.movies_server.model.Genre;
 import pl.wasko.movies_server.repository.GenreRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class GenreService {
     @Autowired
     private GenreRepository genreRepository;
 
-    public List<Genre> findByGenreName(String genreName, PageRequest pageRequest) {
-        Page<Genre> genresPage = genreRepository.findByGenreNameContainingIgnoreCase(
+    public Map findByGenreName(String genreName, PageRequest pageRequest) {
+        Page<Genre> page = genreRepository.findByGenreNameContainingIgnoreCase(
                 genreName, pageRequest);
-        return genresPage.getContent();
+        Map result = new TreeMap();
+        result.put("content", page.getContent());
+        result.put("totalElements", page.getTotalElements());
+        result.put("totalPages", page.getTotalPages());
+        return result;
     }
 
     public Genre findOneById(Long id) {
