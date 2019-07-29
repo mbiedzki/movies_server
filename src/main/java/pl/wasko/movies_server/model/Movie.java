@@ -17,7 +17,7 @@ public class Movie {
     private String title;
     @ManyToOne
     private Director director;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Genre> genres;
     @NotBlank
     private String year;

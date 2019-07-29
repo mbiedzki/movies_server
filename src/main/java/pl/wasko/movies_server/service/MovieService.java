@@ -27,6 +27,20 @@ public class MovieService {
         return result;
     }
 
+//test
+    public Map findByParamsWithGenres(String title, String directorLastName, String year, String genreName, PageRequest pageRequest) {
+
+        Page<Movie> page = movieRepository.findByGenresAndParams(
+                title, directorLastName, year, genreName, pageRequest);
+        Map result = new TreeMap();
+        result.put("content", page.getContent());
+        result.put("totalElements", page.getTotalElements());
+        result.put("totalPages", page.getTotalPages());
+        return result;
+    }
+
+
+
     public Movie findOneById(Long id) {
         return movieRepository.findById(id).get();
     }
