@@ -5,13 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.wasko.movies_server.model.Role;
 import pl.wasko.movies_server.model.User;
 import pl.wasko.movies_server.repository.UserRepository;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 @Service
@@ -21,10 +18,10 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Map findUsersByParams(String name, PageRequest pageRequest) {
+    public Map<String, Object> findUsersByParams(String name, PageRequest pageRequest) {
         Page<User> usersPage = userRepository.findUsersByNameContainingIgnoreCase(
                 name, pageRequest);
-        Map result = new TreeMap();
+        Map<String, Object> result = new TreeMap<>();
         result.put("content", usersPage.getContent());
         result.put("totalElements", usersPage.getTotalElements());
         result.put("totalPages", usersPage.getTotalPages());
@@ -41,7 +38,7 @@ public class UserService {
     }
 
     public User findOneById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElse(null);
     }
 
     public User findOneByName(String name) {

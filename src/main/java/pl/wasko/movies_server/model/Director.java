@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Transactional
-@Table(name="directors")
+@Table(name = "directors")
 public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,7 @@ public class Director {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
     public Director() {
     }
 

@@ -26,6 +26,7 @@ public class SwaggerConfig {
                 .apiInfo(metaData());
     }
 
+    //this is to generate API documentation
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
                 .title("Wasko Movie REST Server")

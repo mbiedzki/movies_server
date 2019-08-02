@@ -39,13 +39,14 @@ public class MovieController {
             HttpServletResponse response) {
         response.setContentType("application/json");
 
-        if(genreName.equals("")) {
+        if (genreName.equals("")) {
             if (sortOrder.equals("asc")) {
                 return movieService.findByParams(title, directorLastName, year, of(page, size, Sort.by(sortBy).ascending()));
             } else {
                 return movieService.findByParams(title, directorLastName, year, of(page, size, Sort.by(sortBy).descending()));
             }
         } else {
+            //depending on request we use 2 different methods to find movies, this one uses more complicated db query and is only used if user queries by genre
             if (sortOrder.equals("asc")) {
                 return movieService.findByParamsWithGenres(title, directorLastName, year, genreName, of(page, size, Sort.by(sortBy).ascending()));
             } else {

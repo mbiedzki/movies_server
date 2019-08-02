@@ -43,6 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(bCryptPasswordEncoder);
     }
 
+    //based on app requirements user can only get, add and edit movies and directors
+    //for authentication user can find user by name
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

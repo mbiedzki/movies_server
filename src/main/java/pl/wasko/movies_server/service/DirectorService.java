@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import pl.wasko.movies_server.model.Director;
 import pl.wasko.movies_server.repository.DirectorRepository;
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,10 +15,10 @@ public class DirectorService {
     @Autowired
     private DirectorRepository directorRepository;
 
-    public Map findByLastAndFirstName(String lastName, String firstName, PageRequest pageRequest) {
+    public Map<String, Object> findByLastAndFirstName(String lastName, String firstName, PageRequest pageRequest) {
         Page<Director> page = directorRepository.findByLastNameContainingIgnoreCaseAndFirstNameContainingIgnoreCase(
                 lastName, firstName, pageRequest);
-        Map result = new TreeMap();
+        Map<String, Object> result = new TreeMap<String, Object>();
         result.put("content", page.getContent());
         result.put("totalElements", page.getTotalElements());
         result.put("totalPages", page.getTotalPages());
@@ -27,7 +26,7 @@ public class DirectorService {
     }
 
     public Director findOneById(Long id) {
-        return directorRepository.findById(id).get();
+        return directorRepository.findById(id).orElse(null);
     }
 
     public Director save(Director director) {

@@ -4,7 +4,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -16,11 +18,11 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     @Column(name = "name", unique = true)
-    @NotEmpty()
+    @NotBlank()
     private String name;
     @Column(name = "password")
-    @Length(min = 4)
-    @NotEmpty()
+    @Size(min = 4)
+    @NotBlank()
     private String password;
     @Column(name = "active")
     private boolean active;
@@ -29,7 +31,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public User(@NotEmpty() String name, @Length(min = 8) @NotEmpty() String password,
+    public User(@NotBlank() String name, @Size(min = 4) @NotBlank() String password,
                 boolean active, Set<Role> roles) {
         this.name = name;
         this.password = password;

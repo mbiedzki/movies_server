@@ -3,7 +3,9 @@ package pl.wasko.movies_server.model;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -20,6 +22,7 @@ public class Movie {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Genre> genres;
     @NotBlank
+    @Size(min = 4, max = 4)
     private String year;
     private String description;
 

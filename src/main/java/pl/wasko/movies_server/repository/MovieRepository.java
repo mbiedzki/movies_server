@@ -12,13 +12,16 @@ import pl.wasko.movies_server.model.Movie;
 
 import java.util.List;
 import java.util.Set;
+
 @Repository
 public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
     // This methods returns pageable result of db query
     Page<Movie> findByTitleContainingIgnoreCaseAndDirector_LastNameContainingIgnoreCaseAndYearContainingIgnoreCase(
             String title, String director_lastName, String year, Pageable pageable);
-    //test
-    @Query( value = "select * from movies m " +
+
+    //This methods returns pageable result of db query when we need to also check genres
+    //It produces joined table with 1 record for every combination of movie + genre and then selects the appropriate records
+    @Query(value = "select * from movies m " +
             "join movies_genres mg on m.id = mg.movie_id " +
             "join genres g on g.id = mg.genres_id " +
             "join directors d on d.id = m.director_id " +
