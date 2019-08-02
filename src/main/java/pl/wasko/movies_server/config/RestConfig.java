@@ -9,6 +9,8 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class RestConfig {
+
+    //todo this filter is for test environment only, should be removed for production
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

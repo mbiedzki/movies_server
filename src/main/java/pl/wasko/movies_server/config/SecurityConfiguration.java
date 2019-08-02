@@ -52,11 +52,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-                .antMatchers("/users/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/findUser").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/directors/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/movies/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/genres/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/genres/**").hasRole("ADMIN")
                 .and().httpBasic()
+                //todo this CORS setting is for test environment only, should be removed for production
                 .and().cors()
                 .and().csrf().disable();
     }

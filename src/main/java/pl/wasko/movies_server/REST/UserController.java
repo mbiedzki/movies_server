@@ -13,12 +13,11 @@ import java.util.Map;
 import static org.springframework.data.domain.PageRequest.of;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
+    @GetMapping("/users")
     public Map findByNamePageable(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "0") Integer page,
@@ -29,7 +28,7 @@ public class UserController {
         return listToBeReturned;
     }
 
-    @GetMapping("/findOne")
+    @GetMapping("/findUser")
     public User findOneByName(@RequestParam String name, HttpServletResponse response){
         response.setContentType("application/json");
         User userToBeReturned = userService.findOneByName(name);
@@ -38,7 +37,7 @@ public class UserController {
     }
 
     //find one by id
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public User findByById(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         User userToBeReturned = userService.findOneById(id);
@@ -46,7 +45,7 @@ public class UserController {
         return userToBeReturned;
     }
 
-    @PostMapping("")
+    @PostMapping("/users")
     public User add(@RequestBody User user, HttpServletResponse response) {
         User userToBeAdded = new User();
         if (user.getPassword().isEmpty()) {
@@ -64,7 +63,7 @@ public class UserController {
     }
 
     //update one by id
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public User update(@RequestBody User user, @PathVariable Long id) {
         //find user in db
         User userToBeUpdated = userService.findOneById(id);
@@ -87,7 +86,7 @@ public class UserController {
     }
 
     //delete one by id
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public void delete(@PathVariable Long id, HttpServletResponse response) {
         response.setContentType("application/json");
         userService.delete(id);
